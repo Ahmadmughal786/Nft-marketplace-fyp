@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { Container } from "reactstrap";
 import "./header.css";
 import { NavLink, Link } from "react-router-dom";
@@ -23,8 +23,30 @@ const NAV__LINKS = [
 ];
 
 const Header = () => {
+  const headerRef = useRef(null);
+
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      if (
+        document.body.scrollTop > 80 ||
+        document.documentElement.scrollTop > 80
+      ) {
+        headerRef.current.classList.add("header__shrink");
+      } else {
+        headerRef.current.classList.remove("header__shrink");
+      }
+    });
+    return () => {
+      window.removeEventListener("scroll", headerRef);
+    };
+  }, []);
+
+  const toggleMenu = () => menuRef.current.classList.toggle("active__menu");
+
   return (
-    <header className="header">
+    <header className="header" ref={headerRef}>
       <Container>
         <div className="navigation">
           <div className="logo">
@@ -36,7 +58,7 @@ const Header = () => {
             </h2>
           </div>
 
-          <div className="nav__menu">
+          <div className="nav__menu" ref={menuRef} onClick={toggleMenu}>
             <ul className="nav__list">
               {NAV__LINKS.map((item, index) => (
                 <li className="nav__item" key={index}>
@@ -60,7 +82,7 @@ const Header = () => {
               <Link to="/wallet">Connect Wallet</Link>
             </button>
             <span className="mobile__menu">
-              <i className="ri-menu-line"></i>
+              <i className="ri-menu-line" onClick={toggleMenu}></i>
             </span>
           </div>
         </div>

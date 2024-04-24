@@ -20,3 +20,15 @@
 .step__item__content{
     margin-top: 20px !important;
 }
+
+@media only screen and (max-width:992px){
+    .step__item__content h5 a{
+        font-size: 1rem;
+
+    }
+    .step__item__content p{
+        font-size: .8rem;
+        line-height: 25px;
+    }
+
+}
